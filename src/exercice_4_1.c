@@ -7,12 +7,7 @@ int main(void)
 	GPIO_InitTypeDef GPIO_InitStructure;
 	
 	// Enable Peripheral Clocks
-	
-	// 1. For push button
-	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE);
-	
-	// 2. For LEDs
-	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOC, ENABLE);
+	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA | RCC_AHBPeriph_GPIOC, ENABLE);
 	
 	// Configure Pins
 	
