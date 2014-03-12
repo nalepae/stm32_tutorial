@@ -7,15 +7,30 @@ int main(void)
 	GPIO_InitTypeDef GPIO_InitStructure;
 	
 	// Enable Peripheral Clocks
+	
+	// 1. For push button
+	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOA, ENABLE);
+	
+	// 2. For LEDs
 	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_GPIOC, ENABLE);
 	
 	// Configure Pins
+	
+	// 1. LEDs
 	GPIO_StructInit(&GPIO_InitStructure);
-	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_9;
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8 | GPIO_Pin_9;
 	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;
 	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
 	GPIO_InitStructure.GPIO_Speed = GPIO_Speed_Level_1;
 	GPIO_Init(GPIOC, &GPIO_InitStructure);
+
+	// 2. Push button
+	GPIO_StructInit(&GPIO_InitStructure);
+	GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0;
+	GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
+	GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
+	GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
+	GPIO_Init(GPIOA, &GPIO_InitStructure);
 	
 	// Configure SysTick Timer
 	if (SysTick_Config(SystemCoreClock / 1000))
@@ -23,11 +38,18 @@ int main(void)
 	
 	while(1)
 	{
-		static int ledval = 0;
+		static int ledVal = 0;
+		uint8_t butVal;
 		
-		// toggle led
-		GPIO_WriteBit(GPIOC, GPIO_Pin_9, ledval ? Bit_SET : Bit_RESET);
-		ledval = 1 - ledval;
+		// Toggle green LED
+		GPIO_WriteBit(GPIOC, GPIO_Pin_9, ledVal ? Bit_SET : Bit_RESET);
+		ledVal = 1 - ledVal;
+		
+		// Read push button
+		butVal = GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_0);
+		
+		// Toggle blue LED
+		GPIO_WriteBit(GPIOC, GPIO_Pin_8, butVal ? Bit_SET : Bit_RESET);
 		
 		Delay(250); // wait 250ms
 	}
