@@ -6,10 +6,6 @@ void Delay(uint32_t nTime);
 
 int main(void)
 {
-	
-	// String to send
-	char *stringToSend = "hello world\n";
-	
 	uart_open(USART1, 9600, USART_Mode_Rx | USART_Mode_Tx);
 	
 	// Configure SysTick Timer
@@ -18,10 +14,11 @@ int main(void)
 	
 	while(1)
 	{
-		int i;
-		for (i = 0; i < strlen(stringToSend); i ++)
-			uart_putc(USART1, stringToSend[i]);
-		Delay(250); // wait 250ms
+		// Receive data
+		char c = uart_getc(USART1);
+		
+		// Transmit data
+		uart_putc(USART1, c);
 	}
 }
 
