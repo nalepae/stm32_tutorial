@@ -55,3 +55,8 @@ ______________
 **Exercice 6.2 : Write and Test an EEPROM Module**
 * *Special need* : EEPROM Microchip 25LC160
 * *Purpose* : Write datas into a SPI EEPROM and read these same datas from the same EEPROM.
+
+**Exercie 10.1 : Timer and PWM**
+* *Special need* : LCD Screen or a LED with resistor
+* *Purpose* : Modulate the backlight of LCD screen by variating the pulse width
+of a PWM output.
